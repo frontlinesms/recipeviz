@@ -141,7 +141,7 @@ var RecipeViz = function() {
 		var cookbook = JSON.parse(cookbookJson);
 		$.each(cookbook.recipes, function(index, recipe) {
 			var elements = [], paths = [];
-			elements.push("st=>start: " + recipe.name + "\n" + getTriggerTypes(recipe));
+			elements.push("st=>start: " + getTriggerTypes(recipe));
 			processConditions(recipe.conditions, elements, paths);
 			processActions(recipe.actions, elements, paths, false, recipe.conditions.length);
 			processActions(recipe.elseActions, elements, paths, true, recipe.conditions.length);
