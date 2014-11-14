@@ -1,0 +1,14 @@
+nav .navbar-brand {
+	padding:0;
+}
+nav .navbar-brand img {
+	width:50px;
+}
+h1 {
+	color:#777;
+}
+#ckbk {
+	display:block;
+	border:1px solid #ccc;
+	margin-bottom:15px;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/raphael-min.js"></script>
+	<script type="text/javascript" src="js/flowchart-1.3.4.min.js"></script>
+	<script type="text/javascript" src="js/recipeviz.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/recipeviz.css" />
+	<title>Recipe Viz</title>
+</head>
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					<img src="images/fsms_dev_logo.png"/>
+				</a>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12"><h1>recipeviz</h1></div>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Paste your .ckbk below
+				</div>
+				<div class="panel-body" id="#ckbkWrap">
+					<textarea id="ckbk" cols="180" rows="12" data-placeholder="paste cookbook json here"></textarea>
+					<button id="go" class="btn btn-primary">
+						<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+						Generate Cookbook Diagram
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Cookbook Diagram
+				</div>
+				<div class="panel-body">
+					<div id="diagram"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
