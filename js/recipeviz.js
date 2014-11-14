@@ -2,6 +2,7 @@ var RecipeViz = function() {
 	var
 	handleSubmit = function() {
 		parseAndDraw($('#ckbk').val());
+		jump('diagram');
 	},
 	getTriggerTypes = function(recipe) {
 		var types = [];
@@ -181,7 +182,7 @@ var RecipeViz = function() {
 				}
 			}
 			console.log(elements.concat(paths).join('\n'));
-			$('#diagram').append('<div class="recipeDiagram" id="' + recipe.id + '"></div>');
+			$('#diagram').append('<div class="recipeDiagram panel panel-' + (index % 1 === 0 ? 'success' : 'default') +'"><div class="panel-heading">' + recipe.name + '</div><div class="panel-body" id="' + recipe.id +'"></div>');
 			draw(recipe.id, elements.concat(paths).join('\n'));
 		});
 	},
@@ -226,6 +227,11 @@ var RecipeViz = function() {
 			}
 		});
 	},
+	jump = function(h){
+		var url = location.href;
+		location.href = "#"+h;
+		history.replaceState(null,null,url);
+	}
 	init = function() {
 		$('#go').click(handleSubmit);
 	};
