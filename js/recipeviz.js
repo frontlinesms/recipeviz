@@ -44,40 +44,93 @@ var RecipeViz = function() {
 			}
 		});
 		return types.join(', ');
-	}
+	},
+	processConditions = function(conditions, elements, paths) {
+		$.each(conditions, function(index, condition) {
+			var str = "r" + index + "=>condition: ";
+			if(condition.type === 'ContactFieldEqualsRule') {
+				// TODO add multi-recipient support
+				str += ("is contact field\n'" + condition.data.fieldName + "'\nequal to\n'" + condition.data.valueToCompare +"'?");
+			}
+			else if(condition.type=='ContactKnownRule') {
+				str += "is the contact known?"
+			}
+			else if(condition.type === 'ContactMemberOfGroupRule') {
+				str += "is the contact a\nmember of the group '" + condition.data.groupName + "'?";
+			}
+			else if(condition.type === 'CustomFieldBooleanRule') {
+				str += "is the true/false contact field\n'" + condition.data.customFieldName + "' " + condition.data.valueToCompare +"?";
+			}
+			else if(condition.type === 'CustomFieldIntegerRule') {
+				str += "is the numeric contact field\n'" + condition.data.customFieldName + "' " + condition.data.operator.toLowerCase().replace('_', ' ') + " " + condition.data.stringToCompare + "?";
+			}
+			else if(condition.type === 'MessageTextContainsRule') {
+				str += "Does the SMS text contain '" + condition.data.messageContainsText + "'?";
+			}
+			else if(condition.type === 'MessageTextReceivedWithinPeriodRule') {
+				//TODO
+				str += condition.type;
+			}
+			else if(condition.type === 'MessageTextSentWithinPeriodRule') {
+				// TODO
+				str += condition.type;
+			}
+			else if(condition.type === 'MessageTextStartsWithRule') {
+				str += "Does the SMS text contain '" + condition.data.messageContainsText + "'?";
+			}
+			else if(condition.type === 'MissedCallReceivedWithinPeriodRule') {
+				// TODO
+				str += condition.type;
+			}
+			else if(condition.type === 'NumberContainsRule') {
+				// TODO
+				str += condition.type;
+			}
+			else if(condition.type === 'NumberStartsWithRule') {
+				// TODO
+				str += condition.type;
+			}
+			else if(condition.type === 'ReceivedOnConnectionRule') {
+				// TODO
+				str += condition.type;
+			}
+			str += "|Yes|No";
+			elements.push(str);
+			if(index === 0) {
+				paths.push("st->r0");
+			}
+			else {
+				paths.push("r" + (index - 1) + "(yes)->r" + index);
+			}
+		});
+	},
+	processActions = function(actions, elements, paths, isElseAction, conditionCount) {
+		$.each(actions, function(index, action) {
+			var str = "a" + index + "=>operation: " + action.type;
+			//TODO
+			elements.push(str);
+			if(index === 0) {
+				paths.push("r" + (conditionCount - 1) + "(yes)->a0");
+			}
+			else {
+				paths.push("a" + (index - 1) + "->a" + index);
+			}
+		});
+	},
 	parseAndDraw = function(cookbookJson) {
 		var cookbook = JSON.parse(cookbookJson);
 		$.each(cookbook.recipes, function(index, recipe) {
-			var elements = [
-			],
-			paths = [
-			];
+			var elements = [], paths = [];
 			elements.push("st=>start: " + recipe.name + "\n" + getTriggerTypes(recipe));
+			processConditions(recipe.conditions, elements, paths);
+			processActions(recipe.actions, elements, paths, false, recipe.conditions.length);
+			processActions(recipe.elseActions, elements, paths, true, recipe.conditions.length);
 			console.log(elements.concat(paths).join('\n'));
-			//draw(elements.concat(paths).join('\n'));
+			draw(elements.concat(paths).join('\n'));
 		});
-		/*
-		[
-			"st=>start: Start|past:>http://www.google.com[blank]",
-			"e=>end: Ende|future:>http://www.google.com",
-			"op1=>operation: My Operation|past",
-			"op2=>operation: Stuff|current",
-			"sub1=>subroutine: My Subroutine|invalid",
-			"cond=>condition: Yes ",
-			"or No?|approved:>http://www.google.com",
-			"c2=>condition: Good idea|rejected",
-			"io=>inputoutput: catch something...|future",
-			"st->op1(right)->cond",
-			"cond(yes, right)->c2",
-			"cond(no)->sub1(left)->op1",
-			"c2(yes)->io->e",
-			"c2(no)->op2->e"
-		].join('\n');
-		*/
 	},
 	draw = function(diagramDescriptor) {
 		var diagram = flowchart.parse(diagramDescriptor);
-		console.log('here');
 		diagram.drawSVG('diagram', {
 			'x': 0,
 			'y': 0,
