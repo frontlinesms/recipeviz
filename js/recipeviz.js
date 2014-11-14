@@ -112,6 +112,9 @@ var RecipeViz = function() {
 		$.each(actions, function(index, action) {
 			var actionPrefix = isElseAction ? 'ea' : 'a',
 			str = actionPrefix + index + "=>operation: " + action.type;
+			if(action.type == 'TriggerRecipeAction') {
+				str += ":>#" + action.data.recipeToTriggerId;
+			}
 			//TODO
 			elements.push(str);
 			if(index === 0) {
@@ -178,12 +181,13 @@ var RecipeViz = function() {
 				}
 			}
 			console.log(elements.concat(paths).join('\n'));
-			draw(elements.concat(paths).join('\n'));
+			$('#diagram').append('<div class="recipeDiagram" id="' + recipe.id + '"></div>');
+			draw(recipe.id, elements.concat(paths).join('\n'));
 		});
 	},
-	draw = function(diagramDescriptor) {
+	draw = function(recipeId, diagramDescriptor) {
 		var diagram = flowchart.parse(diagramDescriptor);
-		diagram.drawSVG('diagram', {
+		diagram.drawSVG(recipeId, {
 			'x': 0,
 			'y': 0,
 			'line-width': 3,
