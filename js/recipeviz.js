@@ -119,6 +119,13 @@ var RecipeViz = function() {
 					if(conditionCount > 0) {
 						paths.push("r" + (conditionCount - 1) + "(yes)->" + actionPrefix + "0");
 					}
+					else {
+						paths.push("st->a0");
+					}
+				}
+				else {
+					if(conditionCount > 0) {
+					}
 				}
 			}
 			else {
@@ -137,6 +144,12 @@ var RecipeViz = function() {
 			elements.push('e=>end: End|end')
 
 			if(recipe.actions.length > 0)  {
+				if(recipe.conditions.length > 0) {
+					// link last condition to first action is done in processActions
+				}
+				else {
+					// link start frist action is done in processActions
+				}
 				paths.push('a' + (recipe.actions.length - 1) + '->e');
 			}
 			else {
