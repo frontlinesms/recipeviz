@@ -106,14 +106,19 @@ var RecipeViz = function() {
 	},
 	processActions = function(actions, elements, paths, isElseAction, conditionCount) {
 		$.each(actions, function(index, action) {
-			var str = "a" + index + "=>operation: " + action.type;
+			var actionPrefix = isElseAction ? 'ea' : 'a',
+			str = actionPrefix + index + "=>operation: " + action.type;
 			//TODO
 			elements.push(str);
 			if(index === 0) {
-				paths.push("r" + (conditionCount - 1) + "(yes)->a0");
+				if(!isElseAction) {
+					if(conditionCount > 0) {
+						paths.push("r" + (conditionCount - 1) + "(yes)->" + actionPrefix + "0");
+					}
+				}
 			}
 			else {
-				paths.push("a" + (index - 1) + "->a" + index);
+				paths.push(actionPrefix + (index - 1) + "->" + actionPrefix + index);
 			}
 		});
 	},
@@ -125,6 +130,36 @@ var RecipeViz = function() {
 			processConditions(recipe.conditions, elements, paths);
 			processActions(recipe.actions, elements, paths, false, recipe.conditions.length);
 			processActions(recipe.elseActions, elements, paths, true, recipe.conditions.length);
+			elements.push('e=>end: End|end')
+
+			if(recipe.actions.length > 0)  {
+				paths.push('a' + (recipe.actions.length - 1) + '->e');
+			}
+			else {
+				if(recipe.conditions.length > 0) {
+					// link last condition to end?
+					paths.push('r' + (recipe.conditions.length - 1) + '(yes)->e');
+				}
+				else {
+					// link start to end?
+					paths.push('st->e');
+				}
+			}
+
+			if(recipe.elseActions.length >0 ) {
+				// link every condition's (no) path to first else action
+				// link last else action to end
+				for(var i = 0; i < recipe.conditions.length; i++) {
+					paths.push('r' + i + '(no)->ea0');
+				}
+				paths.push('ea' + (recipe.elseActions.length - 1) + '->e');
+			}
+			else {
+				// link every condition's (no) path to end?
+				for(var i = 0; i < recipe.conditions.length; i++) {
+					paths.push('r' + i + '(no)->e');
+				}
+			}
 			console.log(elements.concat(paths).join('\n'));
 			draw(elements.concat(paths).join('\n'));
 		});
