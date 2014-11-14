@@ -12,3 +12,13 @@ h1 {
 	border:1px solid #ccc;
 	margin-bottom:15px;
 }
+.recipeDiagram {
+	padding:10px 5px;
+	text-align:center;
+}
+.recipeDiagram:nth-of-type(odd) {
+	background-color:#eee;
+}
+.recipeDiagram + .recipeDiagram {
+	border-top: 1px solid #ccc;
+}
