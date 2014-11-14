@@ -42,6 +42,10 @@ var RecipeViz = function() {
 					types.push(str);
 				}
 			}
+			else {
+				// TODO
+				types.push(trigger.type);
+			}
 		});
 		return types.join(', ');
 	},
