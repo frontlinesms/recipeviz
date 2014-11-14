@@ -191,9 +191,9 @@ var RecipeViz = function() {
 		diagram.drawSVG(recipeId, {
 			'x': 0,
 			'y': 0,
-			'line-width': 3,
+			'line-width': 2,
 			'line-length': 50,
-			'text-margin': 10,
+			'text-margin': 15,
 			'font-size': 14,
 			'font-color': 'black',
 			'font-family': 'arial',
@@ -207,8 +207,8 @@ var RecipeViz = function() {
 			'symbols': {
 				'start': {
 					'font-color': 'red',
-			'element-color': 'green',
-			'fill': 'yellow'
+					'element-color': 'green',
+					'fill': 'yellow'
 				},
 				'end':{
 					'class': 'end-element'
