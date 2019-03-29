@@ -138,7 +138,7 @@ var RecipeViz = function() {
 		});
 	},
 	parseAndDraw = function(cookbookJson) {
-		var cookbook = JSON.parse(cookbookJson);
+		var cookbook = JSON.parse(cookbookJson).collections[0];
 		$.each(cookbook.recipes, function(index, recipe) {
 			var elements = [], paths = [];
 			elements.push("st=>start: " + getTriggerTypes(recipe));
